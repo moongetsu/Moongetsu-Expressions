@@ -1,0 +1,108 @@
+    UserPresets: {},
+
+    getPresetsRoot: function () {
+        var base = customStoragePath || (Folder.userData.fsName + "/Moongetsu");
+        var root = new Folder(base + "/Presets");
+        if (!root.exists) root.create();
+        return root;
+    },
+
+    loadUserPresets: function () {
+        var root = this.getPresetsRoot();
+        var allData = {};
+        var folders = root.getFiles();
+
+        for (var i = 0; i < folders.length; i++) {
+            if (folders[i] instanceof Folder) {
+                var pFile = new File(folders[i].fsName + "/presets.json");
+                var catName = decodeURI(folders[i].name);
+
+                if (pFile.exists) {
+                    pFile.open("r");
+                    pFile.encoding = "UTF-8";
+                    try {
+                        var catData = JSON.parse(pFile.read());
+                        allData[catName] = catData;
+                    } catch (e) { }
+                    pFile.close();
+                } else {
+                    allData[catName] = {};
+                }
+            }
+        }
+        this.UserPresets = allData;
+    },
+
+    saveUserPreset: function (category, name, code) {
+        var catName = category || "General";
+        var root = this.getPresetsRoot();
+        var catFolder = new Folder(root.fsName + "/" + catName);
+        if (!catFolder.exists) catFolder.create();
+
+        var pFile = new File(catFolder.fsName + "/presets.json");
+        var data = {};
+
+        if (pFile.exists) {
+            pFile.open("r");
+            try { data = JSON.parse(pFile.read()); } catch (e) { }
+            pFile.close();
+        }
+
+        data[name] = { code: String(code), sliders: [] };
+
+        pFile.open("w");
+        pFile.encoding = "UTF-8";
+        pFile.write(JSON.stringify(data, null, 4));
+        pFile.close();
+        return "true";
+    },
+
+    createCategory: function (name) {
+        var root = this.getPresetsRoot();
+        var catFolder = new Folder(root.fsName + "/" + name);
+        if (!catFolder.exists) catFolder.create();
+        return "true";
+    },
+
+    saveCategoryJSON: function (category) {
+        var root = this.getPresetsRoot();
+        var pFile = new File(root.fsName + "/" + category + "/presets.json");
+        var data = this.UserPresets[category] || {};
+
+        pFile.open("w");
+        pFile.encoding = "UTF-8";
+        pFile.write(JSON.stringify(data, null, 4));
+        pFile.close();
+    },
+
+    renamePreset: function (category, oldName, newName) {
+        this.ensureLibraryLoaded();
+        if (this.UserPresets[category] && this.UserPresets[category][oldName]) {
+            var presetData = this.UserPresets[category][oldName];
+            delete this.UserPresets[category][oldName];
+            this.UserPresets[category][newName] = presetData;
+            this.saveCategoryJSON(category);
+            return true;
+        }
+        return false;
+    },
+
+    deleteUserPreset: function (category, name) {
+        var root = this.getPresetsRoot();
+        var pFile = new File(root.fsName + "/" + category + "/presets.json");
+        if (pFile.exists) {
+            pFile.open("r");
+            var data = {};
+            try { data = JSON.parse(pFile.read()); } catch (e) { }
+            pFile.close();
+
+            if (data[name]) {
+                delete data[name];
+                pFile.open("w");
+                pFile.encoding = "UTF-8";
+                pFile.write(JSON.stringify(data, null, 4));
+                pFile.close();
+            }
+        }
+        return "true";
+    },

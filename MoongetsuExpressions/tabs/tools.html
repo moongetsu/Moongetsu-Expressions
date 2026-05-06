@@ -1,0 +1,32 @@
+<div class="tab-header">
+    <h1>Utility Tools</h1>
+    <p class="subtitle">Quick project maintenance and global search</p>
+</div>
+<div class="panel" style="margin-bottom: 20px;">
+    <div class="form-group">
+        <label>Search & Replace</label>
+        <input type="text" id="find-in" placeholder="Find string...">
+        <input type="text" id="replace-in" placeholder="Replace with...">
+        <button class="btn-primary" onclick="runReplace()" style="margin-top: 10px;">Execute Search/Replace</button>
+    </div>
+</div>
+<div class="panel">
+    <div class="form-group">
+        <label>Property Manager</label>
+        <p style="color: var(--text-secondary); font-size: 11px; margin-bottom: 10px;">Selectively remove expressions
+            from specific properties.</p>
+        <button class="btn-primary" onclick="scanLayerExpressions()" style="margin-bottom: 10px;">Scan Selected
+            Layer</button>
+        <div id="property-list" style="margin-top: 10px;">
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="form-group">
+        <label>Maintenance</label>
+        <p style="color: var(--text-secondary); font-size: 11px; margin-bottom: 10px;">Completely wipe all expressions
+            and sliders from selected layers.</p>
+        <button class="btn-primary" onclick="runRevert()">Deep Revert Layer</button>
+    </div>
+</div>

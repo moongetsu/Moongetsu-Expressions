@@ -1,0 +1,62 @@
+    setStoragePath: function (path) {
+        customStoragePath = path;
+    },
+
+    loadPrefs: function () {
+        var file = getSettingsFile("settings.json");
+        if (file.exists) {
+            file.open("r");
+            var content = file.read();
+            file.close();
+            return content;
+        }
+        return "null";
+    },
+
+    savePrefs: function (json) {
+        var file = getSettingsFile("settings.json");
+        file.encoding = "UTF-8";
+        file.open("w");
+        try {
+            var obj = JSON.parse(json);
+            file.write(JSON.stringify(obj, null, 4));
+        } catch (e) {
+            file.write(json);
+        }
+        file.close();
+        return "true";
+    },
+
+    migrateStorage: function (newPath) {
+        this.loadUserPresets();
+        var currentPresets = this.UserPresets;
+
+        customStoragePath = newPath;
+        var targetFolder = new Folder(newPath);
+        if (!targetFolder.exists) targetFolder.create();
+
+        var newFile = getSettingsFile();
+        if (newFile.exists) {
+            newFile.open("r");
+            var content = newFile.read();
+            newFile.close();
+            try {
+                var existingInNew = JSON.parse(content);
+                for (var key in existingInNew) {
+                    if (!currentPresets.hasOwnProperty(key)) {
+                        currentPresets[key] = existingInNew[key];
+                    }
+                }
+            } catch (e) { }
+        }
+
+        this.UserPresets = currentPresets;
+        this.saveUserPresets();
+        return "true";
+    },
+
+    pickStorageFolder: function () {
+        var folder = Folder.selectDialog("Select Folder for Moongetsu Presets");
+        if (folder) return folder.fsName;
+        return "null";
+    },

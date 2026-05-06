@@ -1,0 +1,41 @@
+<div class="tab-header">
+    <h1>Expression Presets</h1>
+    <p class="subtitle">Quick injection of optimized expressions</p>
+</div>
+
+<div class="panel" style="margin-bottom: 20px;">
+    <div class="form-group">
+        <label>Dynamics</label>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="applyPreset('Dynamics', 'Bounce')">Bounce</button>
+            <button class="btn-primary" onclick="applyPreset('Dynamics', 'Elastic')">Elastic</button>
+            <button class="btn-primary" onclick="applyPreset('Dynamics', 'Overshoot')">Overshoot</button>
+        </div>
+    </div>
+</div>
+
+<div class="panel" style="margin-bottom: 20px;">
+    <div class="form-group">
+        <label>Randomness</label>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="applyPreset('Random', 'Wiggle')">Wiggle</button>
+            <button class="btn-primary" onclick="applyPreset('Random', 'Wig X')">Wig X</button>
+            <button class="btn-primary" onclick="applyPreset('Random', 'Wig Y')">Wig Y</button>
+        </div>
+    </div>
+</div>
+
+<div class="panel">
+    <div class="form-group">
+        <label>Responsive Pinning</label>
+        <div class="btn-group" style="flex-direction: row; flex-wrap: wrap; gap: 5px;">
+            <button class="btn-primary" style="width: auto; padding: 8px 12px; font-size: 11px;" onclick="applyPreset('Responsive', 'TL')">Top Left</button>
+            <button class="btn-primary" style="width: auto; padding: 8px 12px; font-size: 11px;" onclick="applyPreset('Responsive', 'TR')">Top Right</button>
+            <button class="btn-primary" style="width: auto; padding: 8px 12px; font-size: 11px;" onclick="applyPreset('Responsive', 'BL')">Bottom Left</button>
+            <button class="btn-primary" style="width: auto; padding: 8px 12px; font-size: 11px;" onclick="applyPreset('Responsive', 'BR')">Bottom Right</button>
+            <button class="btn-primary" style="width: auto; padding: 8px 12px; font-size: 11px;" onclick="applyPreset('Responsive', 'Center')">Center</button>
+        </div>
+    </div>
+</div>
+
+<button class="btn-primary" style="margin-top: 20px; background: transparent; border: 1px solid var(--border); color: var(--text-secondary);" onclick="clearExpressions()">Clear All Expressions</button>

@@ -1,0 +1,98 @@
+:root {
+    --bg-primary: #121212;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #252525;
+    --bg-hover: #363636;
+    --text-primary: #ffffff;
+    --text-secondary: #b0b0b0;
+    --text-muted: #666666;
+    --accent: #F8F818;
+    --accent-hover: rgba(248, 248, 24, 0.1);
+    --accent-glow: rgba(248, 248, 24, 0.3);
+    --success: #22c55e;
+    --warning: #eab308;
+    --error: #ef4444;
+    --danger: #ff4d4d;
+    --border: #333333;
+    --border-light: #444444;
+    --radius: 8px;
+    --radius-sm: 4px;
+    --transition: 0.2s ease;
+}
+
+body.light-theme {
+    --bg-primary: #f0f0f0;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #e8e8e8;
+    --bg-hover: #dddddd;
+    --text-primary: #000000;
+    --text-secondary: #000000;
+    --text-muted: #666666;
+    --accent: #c4a100;
+    --accent-hover: rgba(196, 161, 0, 0.1);
+    --accent-glow: rgba(196, 161, 0, 0.2);
+    --border: #d0d0d0;
+    --border-light: #e0e0e0;
+}
+
+body.light-theme .panel {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e0e0e0;
+}
+
+body.light-theme .btn-primary {
+    background: #f8f8f8;
+    border: 1px solid #d0d0d0;
+    color: #1a1a1a;
+}
+
+body.light-theme .btn-primary:hover {
+    background: #eeeeee;
+    border-color: var(--accent);
+}
+
+body.light-theme .nav-item i {
+    color: #666666;
+}
+
+body.light-theme .nav-item.active i {
+    color: #000000;
+}
+
+body.light-theme input,
+body.light-theme textarea {
+    background: #ffffff;
+    border: 1px solid #d0d0d0;
+    color: #1a1a1a;
+}
+
+body.light-theme .home-card {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+body.light-theme .hero-section {
+    background: linear-gradient(135deg, rgba(196, 161, 0, 0.05) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+body.light-theme .preset-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+body.light-theme .preset-card:hover {
+    background: #ffffff;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+body.light-theme .preset-icon {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: rgba(0, 0, 0, 0.08);
+    color: var(--text-primary);
+}
+
+body.light-theme .action-btn {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+}

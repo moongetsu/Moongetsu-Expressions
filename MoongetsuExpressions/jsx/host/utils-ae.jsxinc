@@ -1,0 +1,156 @@
+    applyPreset: function (category, name, prefix) {
+        var preset = null;
+
+        if (DefaultPresets[category] && DefaultPresets[category][name]) {
+            preset = DefaultPresets[category][name];
+        } else {
+            this.loadUserPresets();
+            if (this.UserPresets[category] && this.UserPresets[category][name]) {
+                preset = this.UserPresets[category][name];
+            }
+        }
+
+        if (!preset) return "Error";
+        var comp = this.getComp();
+        if (!comp) return;
+        var props = comp.selectedProperties;
+
+        var code = preset.code;
+        var sliders = preset.sliders;
+
+        if (prefix && prefix !== "M_") {
+            code = code.replace(/M_/g, prefix);
+            if (sliders) {
+                var newSliders = [];
+                for (var s = 0; s < sliders.length; s++) {
+                    newSliders.push([sliders[s][0].replace("M_", prefix), sliders[s][1], sliders[s][2]]);
+                }
+                sliders = newSliders;
+            }
+        }
+
+        app.beginUndoGroup("Apply " + name);
+        for (var i = 0; i < props.length; i++) {
+            if (props[i].canSetExpression) {
+                var layer = this.getLayer(props[i]);
+                if (sliders) this.injectSliders(layer, sliders);
+                props[i].expression = code;
+            }
+        }
+        app.endUndoGroup();
+    },
+
+    getComp: function () { return app.project.activeItem instanceof CompItem ? app.project.activeItem : null; },
+    getLayer: function (prop) { var p = prop; while (p.parentProperty != null) p = p.parentProperty; return p; },
+
+    injectSliders: function (layer, sliders) {
+        if (!layer.property("Effects") || !sliders) return;
+        for (var i = 0; i < sliders.length; i++) {
+            var sName = sliders[i][0], sVal = sliders[i][1], sType = sliders[i][2] || "slider";
+            if (!layer.property("Effects").property(sName)) {
+                var effect = layer.property("Effects").addProperty(sType === "point" ? "ADBE Point Control" : "ADBE Slider Control");
+                effect.name = sName;
+                effect.property(1).setValue(sVal);
+            }
+        }
+    },
+
+    clearAllExpressions: function () {
+        var comp = this.getComp();
+        if (!comp) return;
+        var props = comp.selectedProperties;
+        app.beginUndoGroup("Clear");
+        for (var i = 0; i < props.length; i++) if (props[i].canSetExpression) props[i].expression = "";
+        app.endUndoGroup();
+    },
+
+    revertLayer: function () {
+        var comp = this.getComp();
+        if (!comp || comp.selectedLayers.length === 0) return;
+        app.beginUndoGroup("Deep Revert Layer");
+        var layers = comp.selectedLayers;
+        for (var i = 0; i < layers.length; i++) {
+            var layer = layers[i];
+            this.recursiveProcess(layer, function (p) { if (p.canSetExpression) p.expression = ""; });
+            var fx = layer.property("Effects");
+            if (fx) {
+                for (var j = fx.numProperties; j >= 1; j--) {
+                    if (fx.property(j).matchName.indexOf("Control") !== -1) fx.property(j).remove();
+                }
+            }
+        }
+        app.endUndoGroup();
+    },
+
+    getLayerExpressions: function () {
+        var comp = this.getComp();
+        if (!comp || comp.selectedLayers.length === 0) return "[]";
+        var layer = comp.selectedLayers[0];
+        var found = [];
+        this.recursiveProcess(layer, function (p) {
+            if (p.canSetExpression && p.expression !== "" && p.expression !== null) {
+                found.push({ name: String(p.name), code: String(p.expression) });
+            }
+        });
+        return JSON.stringify(found);
+    },
+
+    resetPropertyExpression: function (index) {
+        var comp = this.getComp();
+        if (!comp || comp.selectedLayers.length === 0) return;
+        var layer = comp.selectedLayers[0];
+        this.recursiveProcess(layer, function (p) {
+            if (p.canSetExpression && p.name === index) {
+                app.beginUndoGroup("Reset " + p.name);
+                p.expression = "";
+                app.endUndoGroup();
+            }
+        });
+    },
+
+    globalSearchReplace: function (find, replace) {
+        var comp = this.getComp();
+        if (!comp) return;
+        app.beginUndoGroup("Replace");
+        for (var i = 1; i <= comp.numLayers; i++) {
+            this.recursiveProcess(comp.layer(i), function (p) {
+                p.expression = p.expression.split(find).join(replace);
+            });
+        }
+        app.endUndoGroup();
+    },
+
+    cleanScene: function () {
+        var comp = this.getComp();
+        if (!comp || comp.selectedLayers.length === 0) return;
+        app.beginUndoGroup("Clean");
+        var layers = comp.selectedLayers;
+        for (var i = 0; i < layers.length; i++) {
+            var expressions = [];
+            this.recursiveProcess(layers[i], function (p) { expressions.push(p.expression); });
+            var fx = layers[i].property("Effects");
+            if (fx) {
+                for (var j = fx.numProperties; j >= 1; j--) {
+                    var name = fx.property(j).name;
+                    var used = false;
+                    for (var k = 0; k < expressions.length; k++) if (expressions[k].indexOf('effect("' + name + '")') !== -1) { used = true; break; }
+                    if (!used && (fx.property(j).matchName.indexOf("Control") !== -1)) fx.property(j).remove();
+                }
+            }
+        }
+        app.endUndoGroup();
+    },
+
+    recursiveProcess: function (parent, callback) {
+        for (var i = 1; i <= parent.numProperties; i++) {
+            var prop = parent.property(i);
+            if (prop.propertyType === PropertyType.PROPERTY && prop.canSetExpression && prop.expression !== "") callback(prop);
+            else if (prop.propertyType !== PropertyType.PROPERTY) this.recursiveProcess(prop, callback);
+        }
+    },
+
+    grabExpression: function () {
+        var comp = this.getComp();
+        if (comp && comp.selectedProperties.length > 0 && comp.selectedProperties[0].canSetExpression) return comp.selectedProperties[0].expression;
+        return "";
+    },

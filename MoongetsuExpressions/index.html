@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Moongetsu Expressions</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/tabs/home.css">
+    <link rel="stylesheet" href="css/tabs/library.css">
+    <link rel="stylesheet" href="css/tabs/settings.css">
+    <link rel="stylesheet" href="css/tabs/tools.css">
+</head>
+
+<body>
+    <div class="app">
+        <nav class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <img src="https://images.gamebanana.com/img/ico/sprays/naruto.gif" alt="Logo">
+                </div>
+            </div>
+            <ul class="nav-tabs">
+                <li class="nav-item active" data-tab="home" title="Home">
+                    <i class="fas fa-home"></i>
+                </li>
+                <li class="nav-item" data-tab="presets" title="Expression Presets">
+                    <i class="fas fa-bolt"></i>
+                </li>
+                <li class="nav-item" data-tab="tools" title="Utility Tools">
+                    <i class="fas fa-magic"></i>
+                </li>
+                <li class="nav-item" data-tab="manage" title="My Library">
+                    <i class="fas fa-folder-open"></i>
+                </li>
+                <li class="nav-item" data-tab="register" title="Register New">
+                    <i class="fas fa-plus-circle"></i>
+                </li>
+                <li class="nav-item" data-tab="settings" title="Settings">
+                    <i class="fas fa-cog"></i>
+                </li>
+            </ul>
+            <div class="sidebar-footer">
+                <div class="nav-item" onclick="openGitHub()" title="GitHub Profile" style="margin-bottom: 12px;">
+                    <i class="fab fa-github"></i>
+                </div>
+                <span class="version">v1.0</span>
+            </div>
+        </nav>
+
+        <main class="content">
+
+            <section class="tab-content active" id="tab-home"></section>
+            <section class="tab-content" id="tab-presets"></section>
+            <section class="tab-content" id="tab-tools"></section>
+            <section class="tab-content" id="tab-manage"></section>
+            <section class="tab-content" id="tab-register"></section>
+            <section class="tab-content" id="tab-settings"></section>
+
+        </main>
+    </div>
+
+    <div id="modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <i class="fas fa-exclamation-triangle" id="modal-icon"></i>
+                <h2 id="modal-title">Attention</h2>
+            </div>
+            <div class="modal-body">
+                <p id="modal-message">Message goes here...</p>
+            </div>
+            <div class="modal-footer" id="modal-footer">
+            </div>
+        </div>
+    </div>
+
+    <script src="js/CSInterface.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/actions.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/library-import.js"></script>
+    <script src="js/modal.js"></script>
+    <script src="js/tools.js"></script>
+    <script src="js/library.js"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>

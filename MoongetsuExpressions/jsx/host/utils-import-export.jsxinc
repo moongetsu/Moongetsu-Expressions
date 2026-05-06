@@ -1,0 +1,162 @@
+    exportLibraryToFolder: function (destPath) {
+        var root = this.getPresetsRoot();
+        var dest = new Folder(destPath);
+        if (!dest.exists) dest.create();
+
+        var files = root.getFiles();
+        for (var i = 0; i < files.length; i++) {
+            if (files[i] instanceof Folder) {
+                var targetSub = new Folder(dest.fsName + "/" + files[i].name);
+                if (!targetSub.exists) targetSub.create();
+
+                var pFile = new File(files[i].fsName + "/presets.json");
+                if (pFile.exists) {
+                    pFile.copy(targetSub.fsName + "/presets.json");
+                }
+            }
+        }
+        return "true";
+    },
+
+    importFromFolder: function (srcPath) {
+        var src = new Folder(srcPath);
+        if (!src.exists) return "false";
+
+        var root = this.getPresetsRoot();
+        var files = src.getFiles();
+        for (var i = 0; i < files.length; i++) {
+            if (files[i] instanceof Folder) {
+                var pFile = new File(files[i].fsName + "/presets.json");
+                if (pFile.exists) {
+                    pFile.open("r");
+                    var data = JSON.parse(pFile.read());
+                    pFile.close();
+                    for (var name in data) {
+                        this.saveUserPreset(files[i].name, name, data[name].code);
+                    }
+                }
+            }
+        }
+        return "true";
+    },
+
+    importJSONToCategory: function (jsonPath, category) {
+        var file = new File(jsonPath);
+        if (!file.exists) return "false";
+        file.open("r");
+        var content = file.read();
+        file.close();
+
+        try {
+            var data = JSON.parse(content);
+            for (var key in data) {
+                if (data[key].code) {
+                    this.saveUserPreset(category, key, data[key].code);
+                } else {
+                    for (var pre in data[key]) {
+                        this.saveUserPreset(category, pre, data[key][pre].code);
+                    }
+                }
+            }
+            return "true";
+        } catch (e) { return "Error"; }
+    },
+
+    exportJSONToPath: function (path) {
+        this.loadUserPresets();
+        var file = new File(path);
+        file.open("w");
+        file.encoding = "UTF-8";
+        file.write(JSON.stringify(this.UserPresets, null, 4));
+        file.close();
+        return "true";
+    },
+
+    importPresetsFromPath: function (path) {
+        var file = new File(path);
+        if (!file.exists) return "false";
+        file.open("r");
+        file.encoding = "UTF-8";
+        var content = file.read();
+        file.close();
+
+        try {
+            var data = JSON.parse(content);
+            for (var cat in data) {
+                var items = data[cat];
+                if (items.hasOwnProperty('code')) {
+                    this.saveUserPreset("General", cat, items.code);
+                } else {
+                    for (var preName in items) {
+                        this.saveUserPreset(cat, preName, items[preName].code);
+                    }
+                }
+            }
+            return "true";
+        } catch (e) { return "Error"; }
+    },
+
+    getImportConflicts: function (jsonPath, category) {
+        var file = new File(jsonPath);
+        if (!file.exists) return "[]";
+        file.open("r");
+        var content = file.read();
+        file.close();
+
+        try {
+            var data = JSON.parse(content);
+            this.loadUserPresets();
+            var conflicts = [];
+
+            var presetsToImport = {};
+            for (var k in data) {
+                if (data[k].code) presetsToImport[k] = data[k];
+                else {
+                    for (var sub in data[k]) presetsToImport[sub] = data[k][sub];
+                }
+            }
+
+            if (this.UserPresets[category]) {
+                for (var name in presetsToImport) {
+                    if (this.UserPresets[category][name]) {
+                        conflicts.push({
+                            name: name,
+                            oldCode: this.UserPresets[category][name].code,
+                            newCode: presetsToImport[name].code
+                        });
+                    }
+                }
+            }
+            return JSON.stringify(conflicts);
+        } catch (e) { return "[]"; }
+    },
+
+    getPresetCode: function (category, name) {
+        this.loadUserPresets();
+        if (this.UserPresets[category] && this.UserPresets[category][name]) {
+            return this.UserPresets[category][name].code;
+        }
+        return "";
+    },
+
+    getUserPresetData: function () {
+        var oldFile = getSettingsFile("presets.json");
+        if (oldFile.exists) {
+            oldFile.open("r");
+            try {
+                var oldData = JSON.parse(oldFile.read());
+                for (var cat in oldData) {
+                    if (typeof oldData[cat] === "object" && !oldData[cat].code) {
+                        for (var pre in oldData[cat]) {
+                            this.saveUserPreset(cat, pre, oldData[cat][pre].code);
+                        }
+                    }
+                }
+                oldFile.remove();
+            } catch (e) { }
+            oldFile.close();
+        }
+
+        this.loadUserPresets();
+        return JSON.stringify(this.UserPresets);
+    }

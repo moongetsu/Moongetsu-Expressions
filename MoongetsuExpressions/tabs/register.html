@@ -1,0 +1,46 @@
+<div class="tab-header">
+    <h1>Register</h1>
+    <p class="subtitle">Add a new expression to your library</p>
+</div>
+
+<div class="panel">
+    <div class="form-group">
+        <label>Target Folder</label>
+        <div style="display: flex; gap: 10px;">
+            <div class="custom-select-container" id="folder-select-container">
+                <div class="custom-select-trigger" onclick="toggleCustomSelect('folder-select')">
+                    <span id="folder-select-text">General</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="custom-select-options" id="folder-select-options">
+                </div>
+                <input type="hidden" id="new-preset-cat" value="General">
+            </div>
+
+            <button class="action-btn" onclick="createNewFolderUI()" title="Add New Folder"
+                style="width: 42px; height: 42px; background: var(--bg-tertiary); border: 1px solid var(--border); border-radius: 6px;">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+
+        <label>Preset Name</label>
+        <input type="text" id="new-preset-name" placeholder="e.g. My Bounce" oninput="validatePresetName()">
+        <div id="preset-name-warning"
+            style="color: var(--accent); font-size: 10px; margin-top: 4px; display: none; font-weight: 600;">
+            <i class="fas fa-exclamation-triangle"></i> Name already exists in this folder!
+        </div>
+
+        <label>Expression Code</label>
+        <textarea id="new-preset-code" placeholder="Paste or grab code..."
+            style="height: 150px; resize: none; margin-top: 5px;"></textarea>
+
+        <div class="btn-group" style="margin-top: 20px; display: flex; flex-direction: row; align-items: stretch;">
+            <button class="btn-primary"
+                style="flex: 1; height: 42px; padding: 0; font-size: 11px; white-space: nowrap; display: flex; align-items: center; justify-content: center;"
+                onclick="grabFromSelected()">Grab from Layer</button>
+            <button id="save-preset-btn" class="btn-primary"
+                style="flex: 1; height: 42px; padding: 0; font-size: 11px; white-space: nowrap; margin-left: 12px; display: flex; align-items: center; justify-content: center;"
+                onclick="savePreset()">Save to Library</button>
+        </div>
+    </div>
+</div>

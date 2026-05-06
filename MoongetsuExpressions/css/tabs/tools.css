@@ -1,0 +1,42 @@
+.diff-container {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+.diff-box {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.diff-box label {
+    font-size: 9px !important;
+    color: var(--text-muted) !important;
+    margin-bottom: 5px !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.diff-box textarea {
+    width: 100%;
+    height: 200px;
+    background: #000;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 10px;
+    padding: 10px;
+    resize: none;
+    line-height: 1.4;
+}
+
+.diff-box.old textarea {
+    border-left: 3px solid #ff4444;
+}
+
+.diff-box.new textarea {
+    border-left: 3px solid var(--accent);
+}

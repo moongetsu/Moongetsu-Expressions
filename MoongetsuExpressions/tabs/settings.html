@@ -1,0 +1,77 @@
+<div class="tab-header">
+    <h1>Settings</h1>
+    <p class="subtitle">Panel configuration and preferences</p>
+</div>
+
+<div class="settings-nav">
+    <div class="settings-nav-item active" onclick="switchSettingsCategory('interface')">Interface</div>
+    <div class="settings-nav-item" onclick="switchSettingsCategory('engine')">Engine</div>
+    <div class="settings-nav-item" onclick="switchSettingsCategory('data')">Data</div>
+</div>
+
+<div class="settings-category active" id="set-interface">
+    <div class="settings-category-title">Appearance</div>
+    <div class="settings-row">
+        <div class="settings-info">
+            <label>Theme Mode</label>
+            <p>Toggle between Light and Dark mode.</p>
+        </div>
+        <button class="btn-primary" id="theme-toggle" onclick="toggleTheme()" style="min-width: 120px;">Light
+            Mode</button>
+    </div>
+    <div class="settings-row">
+        <div class="settings-info">
+            <label>Compact Mode</label>
+            <p>Shrink UI elements for smaller screens.</p>
+        </div>
+        <button class="btn-primary" id="compact-toggle" onclick="toggleCompactMode()"
+            style="min-width: 120px;">Enable</button>
+    </div>
+</div>
+
+<div class="settings-category" id="set-engine">
+    <div class="settings-category-title">Core Engine</div>
+    <div class="settings-row">
+        <div class="settings-info">
+            <label>Slider Prefix</label>
+            <p>Custom name for control effects (default: M_).</p>
+        </div>
+        <input type="text" id="setting-prefix" placeholder="M_" style="width: 80px; text-align: center;"
+            onchange="saveSettings()">
+    </div>
+</div>
+
+<div class="settings-category" id="set-data">
+    <div class="settings-category-title">Library Data</div>
+    <div class="settings-row">
+        <div class="settings-info">
+            <label>Storage Location</label>
+            <p id="storage-path-display">Default (%AppData%)</p>
+        </div>
+        <button class="btn-primary" onclick="changeStoragePath()" style="min-width: 120px;">Change Folder</button>
+    </div>
+    <div class="settings-row">
+        <div class="settings-info">
+            <label>Backup Library</label>
+            <p>Export all custom expressions to a file.</p>
+        </div>
+        <button class="btn-primary" onclick="exportLibrary()" style="min-width: 120px;">Export</button>
+    </div>
+    <div class="settings-row">
+        <div class="settings-info">
+            <label>Restore Library</label>
+            <p>Load custom expressions from a file.</p>
+        </div>
+        <button class="btn-primary" onclick="importLibrary()" style="min-width: 120px;">Import</button>
+    </div>
+</div>
+
+<div class="panel" style="margin-top: 40px;">
+    <div class="form-group">
+        <label>Version Info</label>
+        <p style="color: var(--text-secondary); font-size: 12px; font-weight: 700; margin-bottom: 5px;">Moongetsu
+            Expressions v1.0</p>
+        <p style="color: var(--text-muted); font-size: 11px; line-height: 1.4;">Created by Moongetsu for the AMV
+            editing community.</p>
+    </div>
+</div>

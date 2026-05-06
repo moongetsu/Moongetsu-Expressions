@@ -1,0 +1,22 @@
+<div class="tab-header library-header">
+    <div class="header-main">
+        <h1>My Library</h1>
+        <div id="library-breadcrumb" class="breadcrumb">
+            <span class="root-label">Root</span>
+        </div>
+    </div>
+    <div class="header-actions">
+        <button class="action-btn" id="library-back-btn" onclick="exitFolder()" title="Back to Folders">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <button class="action-btn" onclick="createNewFolderUI()" title="Create New Folder">
+            <i class="fas fa-folder-plus"></i>
+        </button>
+        <button class="action-btn" onclick="refreshCustomUI()" title="Refresh">
+            <i class="fas fa-sync-alt"></i>
+        </button>
+    </div>
+</div>
+
+<div id="custom-list" class="preset-grid">
+</div>

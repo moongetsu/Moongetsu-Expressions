@@ -1,0 +1,181 @@
+.hero-section {
+    background: linear-gradient(135deg, rgba(248, 248, 24, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 30px;
+    margin-bottom: 25px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-logo img {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 15px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.hero-section h1 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--accent);
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.hero-subtitle {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.hero-badges {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.about-section {
+    margin-bottom: 30px;
+    padding: 0 10px;
+}
+
+.about-section h3 {
+    font-size: 14px;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+
+.about-section p {
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.home-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    grid-gap: 16px;
+    gap: 16px;
+    margin-top: 24px;
+    margin-bottom: 40px;
+}
+
+.home-card {
+    background: var(--bg-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius);
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all var(--transition);
+    text-align: left;
+    color: var(--text-primary);
+    width: 100%;
+}
+
+.home-card.main {
+    grid-column: span 1;
+    background: rgba(248, 248, 24, 0.03);
+}
+
+.home-card:hover {
+    background: var(--bg-primary);
+    border-color: var(--accent);
+    color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px var(--accent-glow);
+}
+
+.home-card:hover .card-text h3 {
+    color: var(--accent);
+}
+
+.home-card:hover .card-text p {
+    color: var(--text-secondary);
+}
+
+.home-card:hover .card-icon {
+    background: var(--accent);
+    color: #1a1a1a;
+    box-shadow: 0 0 15px var(--accent-glow);
+    border: 1px solid var(--accent);
+}
+
+.card-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-tertiary);
+    border-radius: var(--radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+    flex-shrink: 0;
+    font-size: 20px;
+    margin-right: 20px;
+    transition: all var(--transition);
+}
+
+.card-text h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.card-text p {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.home-footer {
+    padding: 30px 0;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    margin-top: 20px;
+}
+
+.footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.footer-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 12px;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.footer-link i {
+    font-size: 14px;
+}
+
+.footer-link:hover {
+    color: var(--accent);
+}
+
+.footer-divider {
+    color: var(--border);
+    opacity: 0.5;
+}
+
+
+body.compact-mode .home-card {
+    padding: 12px;
+}
+
+body.compact-mode .home-card h3 {
+    font-size: 13px;
+}
