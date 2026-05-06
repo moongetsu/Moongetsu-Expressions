@@ -2,6 +2,7 @@ function pushSettingsToDisk() {
     var prefs = {
         theme: document.body.classList.contains('light-theme') ? 'light' : 'dark',
         compact: document.body.classList.contains('compact-mode'),
+        hidePresets: document.getElementById('nav-presets').style.display === 'none',
         prefix: document.getElementById('setting-prefix').value || "M_"
     };
     
@@ -28,6 +29,34 @@ function updateCompactButton() {
     var btn = document.getElementById('compact-toggle');
     if (btn) {
         btn.innerText = isCompact ? "Disable" : "Enable";
+    }
+}
+
+function togglePresetsVisibility() {
+    var navItem = document.getElementById('nav-presets');
+    var isHidden = navItem.style.display === 'none';
+    
+    if (isHidden) {
+        navItem.style.display = 'flex';
+    } else {
+        navItem.style.display = 'none';
+        
+        if (document.getElementById('tab-presets').classList.contains('active')) {
+            switchTab('home');
+        }
+    }
+    
+    localStorage.setItem('moongetsu-hide-presets', (!isHidden).toString());
+    updatePresetsButton();
+    pushSettingsToDisk();
+}
+
+function updatePresetsButton() {
+    var navItem = document.getElementById('nav-presets');
+    var isHidden = navItem.style.display === 'none';
+    var btn = document.getElementById('presets-toggle');
+    if (btn) {
+        btn.innerText = isHidden ? "Show" : "Hide";
     }
 }
 
@@ -109,6 +138,11 @@ function initSettings() {
                 else document.body.classList.remove('compact-mode');
                 updateCompactButton();
 
+                var navPresets = document.getElementById('nav-presets');
+                if (prefs.hidePresets) navPresets.style.display = 'none';
+                else navPresets.style.display = 'flex';
+                updatePresetsButton();
+
                 if (prefs.prefix) {
                     var input = document.getElementById('setting-prefix');
                     if (input) input.value = prefs.prefix;
@@ -120,6 +154,13 @@ function initSettings() {
             updateThemeButton();
             if (localStorage.getItem('moongetsu-compact') === 'true') document.body.classList.add('compact-mode');
             updateCompactButton();
+
+            var hidePresets = localStorage.getItem('moongetsu-hide-presets') === 'true';
+            var navPresetsLocal = document.getElementById('nav-presets');
+            if (hidePresets) navPresetsLocal.style.display = 'none';
+            else navPresetsLocal.style.display = 'flex';
+            updatePresetsButton();
+
             var savedPrefix = localStorage.getItem('moongetsu-prefix') || "M_";
             var prefixInput = document.getElementById('setting-prefix');
             if (prefixInput) prefixInput.value = savedPrefix;

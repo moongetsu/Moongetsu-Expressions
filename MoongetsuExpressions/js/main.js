@@ -92,6 +92,7 @@ window.runRevert = runRevert;
 window.toggleTheme = toggleTheme;
 window.toggleCompactMode = toggleCompactMode;
 window.changeStoragePath = changeStoragePath;
+window.togglePresetsVisibility = togglePresetsVisibility;
 window.exportLibrary = exportLibrary;
 window.toggleCustomSelect = toggleCustomSelect;
 window.selectCustomOption = selectCustomOption;
