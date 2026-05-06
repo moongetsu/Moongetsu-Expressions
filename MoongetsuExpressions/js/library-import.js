@@ -1,11 +1,9 @@
 function exportLibrary() {
-    
-    csInterface.evalScript('File.saveDialog("Export Moongetsu Library", "JSON:*.json")', function (result) {
+    csInterface.evalScript('Folder.selectDialog("Select Destination Folder for Library Export")', function (result) {
         if (result && result !== "null") {
             var safePath = result.replace(/\\/g, '/');
-            
-            csInterface.evalScript(`Utils.exportJSONToPath("${safePath}")`, function () {
-                showModal("Export Success", "Library backed up to: " + result, "alert");
+            csInterface.evalScript(`Utils.exportLibraryToFolder("${safePath}")`, function () {
+                showModal("Export Success", "Library structure backed up to: " + result, "alert");
             });
         }
     });
