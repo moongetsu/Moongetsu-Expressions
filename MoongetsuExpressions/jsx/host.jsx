@@ -436,9 +436,17 @@ var Utils = {
     globalSearchReplace: function (find, replace) {
         var comp = this.getComp();
         if (!comp) return;
+
+        var layers = comp.selectedLayers.length > 0 ? comp.selectedLayers : [];
+        if (layers.length === 0) {
+            for (var i = 1; i <= comp.numLayers; i++) {
+                layers.push(comp.layer(i));
+            }
+        }
+
         app.beginUndoGroup("Replace");
-        for (var i = 1; i <= comp.numLayers; i++) {
-            this.recursiveProcess(comp.layer(i), function (p) {
+        for (var j = 0; j < layers.length; j++) {
+            this.recursiveProcess(layers[j], function (p) {
                 p.expression = p.expression.split(find).join(replace);
             });
         }
