@@ -98,4 +98,6 @@ window.selectCustomOption = selectCustomOption;
 window.updateRegisterDropdown = updateRegisterDropdown;
 window.validatePresetName = validatePresetName;
 window.renamePreset = renamePreset;
+window.renameFolder = renameFolder;
+window.deleteFolder = deleteFolder;
 window.editPresetExpression = editPresetExpression;

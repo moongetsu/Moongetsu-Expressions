@@ -155,6 +155,45 @@ function renamePreset(cat, oldName) {
     });
 }
 
+function renameFolder(oldName) {
+    showModal("Rename Folder", `Enter new name for "${oldName}":`, "prompt", function (newName) {
+        if (!newName || newName === oldName) return;
+
+        csInterface.evalScript('Utils.getUserPresetData()', function (result) {
+            try {
+                var data = JSON.parse(result);
+                if (data[newName]) {
+                    showModal("Name Clash", "A folder with that name already exists.", "alert");
+                } else {
+                    csInterface.evalScript(`Utils.renameCategory("${oldName}", "${newName}")`, function (res) {
+                        if (res === "true") {
+                            refreshCustomUI();
+                        } else {
+                            showModal("Error", "Could not rename folder. Make sure it's not open or in use.", "alert");
+                        }
+                    });
+                }
+            } catch (e) { console.error(e); }
+        });
+    });
+}
+
+function deleteFolder(name) {
+    if (name === "General") {
+        showModal("Protected Folder", "The 'General' folder is required and cannot be deleted.", "alert");
+        return;
+    }
+    showModal("Delete Folder", `Are you sure you want to delete the folder "${name}" and ALL its presets? This cannot be undone.`, "confirm", function () {
+        csInterface.evalScript(`Utils.deleteCategory("${name}")`, function (res) {
+            if (res === "true") {
+                refreshCustomUI();
+            } else {
+                showModal("Error", "Could not delete folder.", "alert");
+            }
+        });
+    });
+}
+
 function editPresetExpression(cat, name) {
     csInterface.evalScript('Utils.getUserPresetData()', function (result) {
         try {
@@ -232,7 +271,7 @@ function refreshCustomUI() {
                     (function (cat) {
                         var count = Object.keys(data[cat]).length;
                         fld.innerHTML = `
-                            <div class="preset-icon">
+                            <div class="preset-icon" onclick="enterFolder('${cat}')">
                                 <i class="fas fa-folder"></i>
                             </div>
                             <div class="preset-info" onclick="enterFolder('${cat}')">
@@ -240,6 +279,12 @@ function refreshCustomUI() {
                                 <span class="preset-meta">${count} items</span>
                             </div>
                             <div class="preset-actions">
+                                <div class="action-btn" onclick="renameFolder('${cat}')" title="Rename Folder">
+                                    <i class="fas fa-tag"></i>
+                                </div>
+                                <div class="action-btn delete" onclick="deleteFolder('${cat}')" title="Delete Folder">
+                                    <i class="fas fa-trash-alt"></i>
+                                </div>
                                 <div class="action-btn" onclick="enterFolder('${cat}')" title="Open Folder">
                                     <i class="fas fa-folder-open"></i>
                                 </div>

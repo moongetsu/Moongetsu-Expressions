@@ -255,6 +255,30 @@ var Utils = {
         return "true";
     },
 
+    renameCategory: function (oldName, newName) {
+        var root = this.getPresetsRoot();
+        var oldFolder = new Folder(root.fsName + "/" + oldName);
+        if (oldFolder.exists) {
+            oldFolder.rename(newName);
+            return "true";
+        }
+        return "false";
+    },
+
+    deleteCategory: function (name) {
+        var root = this.getPresetsRoot();
+        var catFolder = new Folder(root.fsName + "/" + name);
+        if (catFolder.exists) {
+            var files = catFolder.getFiles();
+            for (var i = 0; i < files.length; i++) {
+                files[i].remove();
+            }
+            catFolder.remove();
+            return "true";
+        }
+        return "false";
+    },
+
     saveCategoryJSON: function (category) {
         var root = this.getPresetsRoot();
         var pFile = new File(root.fsName + "/" + category + "/presets.json");
