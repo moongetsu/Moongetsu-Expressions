@@ -78,9 +78,8 @@
 ## 📸 Interface Preview
 
 <p align="center">
-  <img src="https://media.discordapp.net/attachments/977518313217347604/1458920132721246432/Screenshot_18.png?ex=696164c1&is=69601341&hm=db094b6096dbde442324d5f0e09ac93db12a130339f64f33ebb4ea3edac4c3d7&=&format=webp&quality=lossless" alt="Moongetsu Library Manage" />
+  <img width="560" height="621" alt="Screenshot_69" src="https://github.com/user-attachments/assets/a6203e51-edc0-463f-a31d-5d9e234991a7" />
   <br />
-  <sub><i>Library management with folder navigation</i></sub>
 </p>
 
 ---
